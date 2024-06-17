@@ -6,7 +6,7 @@ const Header = () => {
     <header>
       <Navbar expand='lg' variant='dark' bg='dark' collapseOnSelect>
         <Container>
-          <Navbar.Brand href='/'>ProShop</Navbar.Brand>
+          <Navbar.Brand href='/'>DjangoShop</Navbar.Brand>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='mr-auto'>

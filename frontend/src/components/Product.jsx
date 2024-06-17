@@ -18,12 +18,12 @@ const Product = ({ product }) => {
           </Card.Title>
           <Card.Text>
             <div className='my-3'>
-              {product.rating} from {product.numReviews}
               <Rating
                 rating={product.rating}
                 numReviews={product.numReviews}
                 color={`#f8e825`}
               />
+              from {product.numReviews} reviews
             </div>
           </Card.Text>
           <Card.Text as='h4'>${product.price}</Card.Text>

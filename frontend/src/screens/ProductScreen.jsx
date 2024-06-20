@@ -11,7 +11,7 @@ const ProductScreen = () => {
 
   return (
     <div>
-      <Link to='/' className='btn btn-light my-3'>
+      <Link to='/' className='btn my-3'>
         Go Back
       </Link>
       <Row>
@@ -50,6 +50,20 @@ const ProductScreen = () => {
                     {product.countInStock > 0 ? 'In Stock' : 'Out of Stuck'}
                   </Col>
                 </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Button
+                  className='btn rounded-1'
+                  type='button'
+                  style={{
+                    backgroundColor: '#212529',
+                    color: '#fff',
+                    width: '100%',
+                  }}
+                  disabled={product.countInStock === 0}
+                >
+                  Add to Cart
+                </Button>
               </ListGroup.Item>
             </ListGroup>
           </Card>

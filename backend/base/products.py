@@ -31,7 +31,7 @@ products = [
     'image': '/images/camera.jpg',
     'description':
       'Characterized by versatile imaging specs, the Canon EOS 80D further clarifies itself using a pair of robust focusing systems and an intuitive design',
-    'brand': 'Cannon',
+    'brand': 'Nike',
     'category': 'Electronics',
     'price': 80.99,
     'countInStock': 0,

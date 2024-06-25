@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
+
 import { productListReducer } from './reducers/productReducers';
 
 const reducer = combineReducers({

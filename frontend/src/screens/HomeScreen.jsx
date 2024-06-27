@@ -8,7 +8,7 @@ import Message from '../components/Message';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
-  const productList = useSelector((item) => item.productList);
+  const productList = useSelector((store) => store.productList);
   const { loading, error, products } = productList;
 
   useEffect(() => {

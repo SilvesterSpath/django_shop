@@ -15,7 +15,7 @@ import Rating from '../components/Rating';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 
-const ProductScreen = ({ match, history }) => {
+const ProductScreen = () => {
   const [quantity, setQuantity] = useState(1);
   const navigate = useNavigate();
 

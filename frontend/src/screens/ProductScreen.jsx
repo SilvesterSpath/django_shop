@@ -30,7 +30,6 @@ const ProductScreen = () => {
   }, [dispatch, id]);
 
   const addToCartHandler = () => {
-    console.log('add to cart', { id });
     /* dispatch({ type: 'ADD_TO_CART', payload: { ...product, quantity } }); */
     navigate(`/cart/${id}?qty=${quantity}`);
   };

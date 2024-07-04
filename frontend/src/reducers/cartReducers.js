@@ -4,14 +4,10 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
   switch (action.type) {
     case CART_ADD_ITEM:
       const item = action.payload;
-      console.log('Current state:', state.cartItems);
-      console.log('Item being added:', item);
 
       const existItem = state.cartItems.find((x) => x.product === item.product);
-      console.log('Existing item found:', existItem);
 
       if (existItem) {
-        console.log('Updating existing item');
         return {
           ...state,
           cartItems: state.cartItems.map((x) =>
@@ -19,7 +15,6 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
           ),
         };
       } else {
-        console.log('Adding new item');
         return {
           ...state,
           cartItems: [...state.cartItems, item],

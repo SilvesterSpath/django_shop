@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Row, Col, Image, Form, ListGroup } from 'react-bootstrap';
-import { addToCart } from '../actions/cartActions';
+import { Row, Col, Image, Form, ListGroup, Button } from 'react-bootstrap';
+import { addToCart, removeFromCart } from '../actions/cartActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import Message from '../components/Message';
@@ -21,6 +21,10 @@ const CartScreen = () => {
   }, [dispatch, id, qty]);
 
   const navigate = useNavigate();
+
+  const removeFromCartHandler = (id) => {
+    dispatch(removeFromCart(id));
+  };
 
   return (
     <Row>
@@ -57,6 +61,15 @@ const CartScreen = () => {
                         </option>
                       ))}
                     </Form.Control>
+                  </Col>
+                  <Col md={1}>
+                    <Button
+                      type='button'
+                      variant='light'
+                      onClick={() => removeFromCartHandler(item.product)}
+                    >
+                      <i className='fas fa-trash'></i>
+                    </Button>
                   </Col>
                 </Row>
               </ListGroup.Item>

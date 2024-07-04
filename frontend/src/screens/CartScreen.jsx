@@ -42,6 +42,22 @@ const CartScreen = () => {
                     <Link to={`/product/${item.product}`}>{item.name}</Link>
                   </Col>
                   <Col md={2}>${item.price}</Col>
+                  <Col md={3}>
+                    {' '}
+                    <Form.Control
+                      as='select'
+                      value={item.cty}
+                      onChange={(e) =>
+                        dispatch(addToCart(item.product, e.target.value))
+                      }
+                    >
+                      {[...Array(item.countInStock).keys()].map((item) => (
+                        <option key={item + 1} value={item + 1}>
+                          {item + 1}
+                        </option>
+                      ))}
+                    </Form.Control>
+                  </Col>
                 </Row>
               </ListGroup.Item>
             ))}

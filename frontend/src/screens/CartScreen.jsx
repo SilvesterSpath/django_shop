@@ -24,6 +24,7 @@ const CartScreen = () => {
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id));
+    navigate('/cart', { replace: true });
   };
 
   return (

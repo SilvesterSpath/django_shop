@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-viwk2a)!+yfc24eiljsr=__a+ndr-w)g^2c0m=+%t1x$&u@v%0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'base.apps.BaseConfig',
     'rest_framework',
     'corsheaders',
+    'debug_toolbar',
 ]
 
 # Django project settings.py
@@ -95,7 +96,7 @@ REST_FRAMEWORK = {
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
-
+    'debug_toolbar.middleware.DebugToolbarMiddleware',  
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -186,5 +187,9 @@ MEDIA_ROOT = 'static/images'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
 
 

@@ -21,8 +21,8 @@ export const listProducts = () => async (dispatch) => {
     dispatch({
       type: PRODUCT_LIST_FAIL,
       payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
+        error.response && error.response.data.detail
+          ? error.response.data.detail
           : error.message,
     });
   }
@@ -38,11 +38,14 @@ export const listProductDetails = (id) => async (dispatch) => {
       payload: data,
     });
   } catch (error) {
+    console.log('Full error object:', error);
+    console.log('Error response:', error.response);
+    console.log('Error response data:', error.response.data);
     dispatch({
       type: PRODUCT_DETAILS_FAIL,
       payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
+        error.response && error.response.data.detail
+          ? error.response.data.detail
           : error.message,
     });
   }

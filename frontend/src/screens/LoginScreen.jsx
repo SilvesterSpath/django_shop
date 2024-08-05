@@ -12,8 +12,6 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState(null);
 
-  console.log(email, password);
-
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();

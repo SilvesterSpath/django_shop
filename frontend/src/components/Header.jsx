@@ -1,17 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Container, Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../actions/userActions';
-import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { userInfo } = userLogin;
 
   const logoutHandler = () => {
-    console.log('Logging out...');
     dispatch(logout());
   };
 

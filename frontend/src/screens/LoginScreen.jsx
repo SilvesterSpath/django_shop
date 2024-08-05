@@ -10,7 +10,7 @@ import FormContainer from '../components/FormContainer';
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState(null);
+  /* const [message, setMessage] = useState(null); */
 
   const dispatch = useDispatch();
   const location = useLocation();

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link, redirect, useLocation, useNavigate } from 'react-router-dom';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Form, Button, Row, Col } from 'react-bootstrap';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { useDispatch, useSelector } from 'react-redux';
@@ -38,6 +38,8 @@ const LoginScreen = () => {
     <div>
       <FormContainer>
         <h1>Sign In</h1>
+        {error && <Message variant='danger'>{error}</Message>}
+        {loading && <Loader />}
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='email'>
             <Form.Label>Email Address</Form.Label>

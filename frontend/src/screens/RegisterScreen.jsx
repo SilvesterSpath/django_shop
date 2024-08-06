@@ -10,8 +10,9 @@ import FormContainer from '../components/FormContainer';
 const RegisterScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [name, setName] = useState('');
-  /* const [message, setMessage] = useState(null); */
+  const [message, setMessage] = useState(null);
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -29,30 +30,36 @@ const RegisterScreen = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log('Submitting...');
-    dispatch(register(email, password));
+    if (password !== confirmPassword) {
+      setMessage('Passwords do not match');
+    } else {
+      dispatch(register(name, email, password));
+    }
   };
 
   return (
     <div>
       <FormContainer>
-        <h1>Sign In</h1>
+        <h1>Sign Up</h1>
+        {message && <Message variant='danger'>{message}</Message>}
         {error && <Message variant='danger'>{error}</Message>}
         {loading && <Loader />}
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='name'>
             <Form.Label>Name</Form.Label>
             <Form.Control
+              required
               type='text'
               placeholder='Enter name'
               value={name}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
             ></Form.Control>
           </Form.Group>
           <p></p>
           <Form.Group controlId='email'>
             <Form.Label>Email Address</Form.Label>
             <Form.Control
+              required
               type='email'
               placeholder='Enter email'
               value={email}
@@ -63,6 +70,7 @@ const RegisterScreen = () => {
           <Form.Group controlId='password'>
             <Form.Label>Enter Password</Form.Label>
             <Form.Control
+              required
               type='password'
               placeholder='Enter password'
               value={password}
@@ -70,16 +78,27 @@ const RegisterScreen = () => {
             ></Form.Control>
           </Form.Group>
           <p></p>
+          <Form.Group controlId='passwordConfirm'>
+            <Form.Label>Confirm Password</Form.Label>
+            <Form.Control
+              required
+              type='password'
+              placeholder='Confirm password'
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            ></Form.Control>
+          </Form.Group>
+          <p></p>
           <Button type='submit' variant='primary'>
-            Sign In
+            Sign Up
           </Button>
         </Form>
       </FormContainer>
       <Row className='py-3'>
         <Col>
-          New Customer?{' '}
-          <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
-            Register
+          Have an account?{' '}
+          <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
+            Sign in
           </Link>
         </Col>
       </Row>

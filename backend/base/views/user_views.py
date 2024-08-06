@@ -10,6 +10,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from base.serializers import ProductSerializer, UserSerializer, UserSerializerWithToken 
 from django.contrib.auth.hashers import make_password
+from django.db import IntegrityError
 
 
 from rest_framework import status
@@ -44,6 +45,10 @@ class MyTokenObtainPairView(TokenObtainPairView):
 def registerUser(request):
     data = request.data
     try:
+        # Check if user already exists
+        if User.objects.filter(email=data['email']).exists():
+            return Response({'detail': 'User with this email already exists.'}, status=status.HTTP_400_BAD_REQUEST)
+        
         user = User.objects.create(
             first_name=data['name'],
             username=data['email'],
@@ -52,9 +57,13 @@ def registerUser(request):
         )
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data)
-    except:
-        message = {'detail': 'User with this email already exists.'}
-        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    except IntegrityError:
+        return Response({'detail': 'User with this email already exists.'}, status=status.HTTP_400_BAD_REQUEST)
+    except KeyError as e:
+        return Response({'detail': f'Missing required field: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({'detail': f'An error occurred: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

@@ -64,6 +64,25 @@ def registerUser(request):
     except Exception as e:
         return Response({'detail': f'An error occurred: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateUserProfile(request):
+    user = request.user
+    # users only can change their own profile
+    serializer = UserSerializerWithToken(user, many=False)
+
+    data = request.data
+
+    user.first_name = data['name']
+    user.username = data['email']
+    user.email = data['email']
+
+    if data['password'] != '' : 
+        user.password = make_password(data['password'])
+
+    user.save()
+
+    return Response(serializer.data)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

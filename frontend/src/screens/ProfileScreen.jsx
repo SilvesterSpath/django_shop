@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
@@ -14,7 +14,6 @@ const ProfileScreen = () => {
   const [message, setMessage] = useState(null);
 
   const dispatch = useDispatch();
-  const location = useLocation();
   const navigate = useNavigate();
 
   const userDetails = useSelector((state) => state.userDetails);

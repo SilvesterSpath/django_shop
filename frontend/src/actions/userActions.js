@@ -108,7 +108,7 @@ export const register = (name, email, password) => async (dispatch) => {
 };
 
 // user details action
-export const details = (id) => async (dispatch, getState) => {
+export const getUserDetails = (id) => async (dispatch, getState) => {
   try {
     dispatch({
       type: USER_DETAILS_REQUEST,
@@ -171,11 +171,13 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
       payload: data,
     });
 
+    // because the login credentials are possible changed
     dispatch({
       type: USER_LOGIN_SUCCESS,
       payload: data,
     });
 
+    // and we want to update the userInfo in localStorage as well
     localStorage.setItem('userInfo', JSON.stringify(data));
   } catch (error) {
     dispatch({

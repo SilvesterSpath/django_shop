@@ -4,7 +4,7 @@ import { Form, Button, Row, Col } from 'react-bootstrap';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { useDispatch, useSelector } from 'react-redux';
-import { details } from '../actions/userActions';
+import { getUserDetails, updateUserProfile } from '../actions/userActions';
 
 const ProfileScreen = () => {
   const [email, setEmail] = useState('');
@@ -28,7 +28,7 @@ const ProfileScreen = () => {
     } else {
       if (!user || !user.name) {
         // because if no user there is no user.id
-        dispatch(details('profile'));
+        dispatch(getUserDetails('profile'));
       } else {
         setEmail(user.email);
         setName(user.name);
@@ -41,7 +41,8 @@ const ProfileScreen = () => {
     if (password !== confirmPassword) {
       setMessage('Passwords do not match');
     } else {
-      dispatch(details(name, email, password));
+      dispatch(getUserDetails(name, email, password));
+      dispatch(updateUserProfile({ id: user.id, name, email, password }));
     }
   };
   return (

@@ -23,6 +23,7 @@ const ProductScreen = () => {
   const { id } = params;
   const productDetails = useSelector((store) => store.productDetails);
   const { loading, error, product } = productDetails;
+  console.log(product);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -91,7 +92,7 @@ const ProductScreen = () => {
                         <Form.Control
                           as='select'
                           value={quantity}
-                          onChange={(e) => setQuantity(e.target.value)}
+                          onChange={(e) => setQuantity(Number(e.target.value))}
                         >
                           {[...Array(product.countInStock).keys()].map(
                             (item) => (

@@ -21,9 +21,9 @@ const PlaceOrderScreen = () => {
     0
   );
 
-  cart.shippingPrice = cart.itemsPrice < 100 ? 0 : 100;
-  cart.taxPrice = cart.itemsPrice * 0.15;
-  cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
+  cart.shippingPrice = (cart.itemsPrice > 100 ? 0 : 100).toFixed(2);
+  cart.taxPrice = (cart.itemsPrice * 0.15).toFixed(2);
+  cart.totalPrice = +cart.itemsPrice + +cart.shippingPrice + +cart.taxPrice;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

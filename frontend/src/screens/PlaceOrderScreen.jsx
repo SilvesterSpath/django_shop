@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Row,
@@ -13,23 +13,62 @@ import { saveShippingAddress } from '../actions/cartActions';
 import { useNavigate, Link } from 'react-router-dom';
 import CheckoutSteps from '../components/CheckoutSteps';
 import Message from '../components/Message';
+import { createOrder } from '../actions/orderActions';
+import { ORDER_CREATE_RESET } from '../constants/orderConstants';
 
 const PlaceOrderScreen = () => {
   const cart = useSelector((state) => state.cart);
-  cart.itemsPrice = cart.cartItems.reduce(
-    (acc, item) => acc + item.price * item.qty,
-    0
-  );
+  console.log(cart);
 
-  cart.shippingPrice = (cart.itemsPrice > 100 ? 0 : 100).toFixed(2);
-  cart.taxPrice = (cart.itemsPrice * 0.15).toFixed(2);
-  cart.totalPrice = +cart.itemsPrice + +cart.shippingPrice + +cart.taxPrice;
+  const calculateItems = (cart) => {
+    const itemsPrice = cart.cartItems.reduce(
+      (acc, item) => acc + item.price * item.qty,
+      0
+    );
+    const shippingPrice = (itemsPrice > 100 ? 0 : 100).toFixed(2);
+    const taxPrice = (itemsPrice * 0.15).toFixed(2);
+    const totalPrice = +itemsPrice + +shippingPrice + +taxPrice;
+
+    return {
+      itemsPrice,
+      shippingPrice,
+      taxPrice,
+      totalPrice,
+    };
+  };
+
+  const { itemsPrice, shippingPrice, taxPrice, totalPrice } =
+    calculateItems(cart);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const orderCreate = useSelector((state) => state.orderCreate);
+  const { order, error, success, loading } = orderCreate;
+
+  if (!cart.paymentMethod) {
+    navigate('/payment');
+  }
+
+  useEffect(() => {
+    if (success) {
+      navigate(`/order/${order._id}`);
+      dispatch({ type: ORDER_CREATE_RESET });
+    }
+  }, [success]);
 
   const placeOrder = () => {
     console.log('placeOrder');
+    dispatch(
+      createOrder({
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: itemsPrice,
+        shippingPrice: shippingPrice,
+        taxPrice: taxPrice,
+        totalPrice: totalPrice,
+      })
+    );
   };
 
   return (
@@ -86,27 +125,31 @@ const PlaceOrderScreen = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items:</Col>
-                  <Col>${cart.itemsPrice}</Col>
+                  <Col>${itemsPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Shipping:</Col>
-                  <Col>${cart.shippingPrice}</Col>
+                  <Col>${shippingPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Tax:</Col>
-                  <Col>${cart.taxPrice}</Col>
+                  <Col>${taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Total:</Col>
-                  <Col>${cart.totalPrice}</Col>
+                  <Col>${totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
+              <ListGroup.Item>
+                {error && <Message variant='danger'>{error}</Message>}
+              </ListGroup.Item>
+
               <ListGroup.Item>
                 <Button
                   type='button'

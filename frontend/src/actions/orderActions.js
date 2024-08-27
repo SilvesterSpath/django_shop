@@ -5,6 +5,8 @@ import {
   ORDER_CREATE_FAIL,
 } from '../constants/orderConstants';
 
+import { CART_CLEAR_ITEMS } from '../constants/cartConstants';
+
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
     dispatch({
@@ -29,14 +31,12 @@ export const createOrder = (order) => async (dispatch, getState) => {
       payload: data,
     });
 
-    // because the login credentials are possible changed
     dispatch({
-      type: ORDER_CREATE_SUCCESS,
+      type: CART_CLEAR_ITEMS,
       payload: data,
     });
 
-    // and we want to update the userInfo in localStorage as well
-    localStorage.setItem('userInfo', JSON.stringify(data));
+    localStorage.removeItem('cartItems');
   } catch (error) {
     dispatch({
       type: ORDER_CREATE_FAIL,

@@ -17,8 +17,11 @@ import { createOrder } from '../actions/orderActions';
 import { ORDER_CREATE_RESET } from '../constants/orderConstants';
 
 const PlaceOrderScreen = () => {
+  const orderCreate = useSelector((state) => state.orderCreate);
+  const { order, error, success } = orderCreate;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
-  console.log(cart);
 
   const calculateItems = (cart) => {
     const itemsPrice = cart.cartItems.reduce(
@@ -40,11 +43,6 @@ const PlaceOrderScreen = () => {
   const { itemsPrice, shippingPrice, taxPrice, totalPrice } =
     calculateItems(cart);
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const orderCreate = useSelector((state) => state.orderCreate);
-  const { order, error, success, loading } = orderCreate;
-
   if (!cart.paymentMethod) {
     navigate('/payment');
   }
@@ -54,19 +52,28 @@ const PlaceOrderScreen = () => {
       navigate(`/order/${order._id}`);
       dispatch({ type: ORDER_CREATE_RESET });
     }
-  }, [success]);
+  }, [success, dispatch, navigate, order]);
 
   const placeOrder = () => {
     console.log('placeOrder');
+    console.log({
+      orderItems: cart.cartItems,
+      shippingAddress: cart.shippingAddress,
+      paymentMethod: cart.paymentMethod,
+      itemsPrice,
+      shippingPrice,
+      taxPrice,
+      totalPrice,
+    });
     dispatch(
       createOrder({
         orderItems: cart.cartItems,
         shippingAddress: cart.shippingAddress,
         paymentMethod: cart.paymentMethod,
-        itemsPrice: itemsPrice,
-        shippingPrice: shippingPrice,
-        taxPrice: taxPrice,
-        totalPrice: totalPrice,
+        itemsPrice,
+        shippingPrice,
+        taxPrice,
+        totalPrice,
       })
     );
   };

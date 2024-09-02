@@ -17,7 +17,6 @@ const CartScreen = () => {
   const dispatch = useDispatch();
   const cart = useSelector((store) => store.cart);
   const cartItems = cart.cartItems;
-  console.log(cartItems);
 
   const { id } = useParams();
   const searchParams = new URLSearchParams(window.location.search);

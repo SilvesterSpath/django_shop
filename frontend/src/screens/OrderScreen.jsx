@@ -15,54 +15,13 @@ import Loader from '../components/Loader';
 import { getOrderDetails } from '../actions/orderActions';
 
 const OrderScreen = () => {
-  const { orderId } = { orderId: 10 };
-  console.log(orderId);
+  const { id } = useParams();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, error, loading } = orderDetails;
-
-  /* const order = {
-    _id: 10,
-    orderItems: [
-      {
-        _id: 13,
-        name: 'Lilientahl Berlin Watch Radiant Blue',
-        qty: 1,
-        price: '299.99',
-        image: '/images/playstation.jpg',
-        product: 2,
-        order: 10,
-      },
-    ],
-    shippingAddress: {
-      _id: 10,
-      address: 'Árpád utca 23.',
-      city: 'Dunabogdány',
-      postalCode: '2023',
-      country: 'Hungary',
-      shippingPrice: '0.00',
-      order: 10,
-    },
-    user: {
-      id: 1,
-      _id: 1,
-      username: 'silvester@email.com',
-      email: 'silvester@email.com',
-      name: 'Silvester Spath',
-      isAdmin: true,
-    },
-    paymentMethod: 'PayPal',
-    taxPrice: '45.00',
-    shippingPrice: '0.00',
-    totalPrice: '344.99',
-    isPaid: false,
-    paidAt: null,
-    isDelivered: false,
-    deliveredAt: null,
-    createdAt: '2024-09-02T11:25:53.169570Z',
-  }; */
 
   let itemsPrice;
   function calculateItems(order) {
@@ -74,20 +33,17 @@ const OrderScreen = () => {
   }
 
   if (!loading && !error) {
-    order.itemsprice = order.orderItems.reduce(
-      (acc, item) => acc + item.price * item.qty,
-      0
-    );
+    itemsPrice = calculateItems(order);
   }
 
-  /*   useEffect(() => {
-    if (!order || order._id !== +orderId) {
-      dispatch(getOrderDetails(orderId));
+  useEffect(() => {
+    if (!order || order._id !== +id) {
+      dispatch(getOrderDetails(id));
     } else if (!order || order === undefined) {
       // Handle order not found case
       console.error('Order not found');
     }
-  }, [dispatch, order, orderId]); */
+  }, [dispatch, order, id]);
 
   if (!order.paymentMethod) {
     navigate('/payment');

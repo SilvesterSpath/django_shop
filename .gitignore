@@ -20,6 +20,7 @@ media/
 # React
 node_modules/
 build/
+.env
 .env.local
 .env.development.local
 .env.test.local

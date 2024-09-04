@@ -13,15 +13,23 @@ import { useNavigate, Link, useParams } from 'react-router-dom';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { getOrderDetails } from '../actions/orderActions';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const OrderScreen = () => {
+  const clientId = process.env.REACT_APP_PAYPAL_CLIENT_ID;
+
   const { id } = useParams();
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [sdkReady, setSdkReady] = useState(false);
 
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, error, loading } = orderDetails;
+
+  const orderPay = useSelector((state) => state.orderPay);
+  const { loading: loadingPay, success: successPay } = orderPay;
 
   let itemsPrice;
   function calculateItems(order) {
@@ -36,12 +44,27 @@ const OrderScreen = () => {
     itemsPrice = calculateItems(order);
   }
 
+  const addPayPalScript = () => {
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+    script.async = true;
+    script.onload = () => {
+      // Add PayPal button here
+      setSdkReady(true);
+    };
+    document.body.appendChild(script);
+  };
+
   useEffect(() => {
-    if (!order || order._id !== +id) {
+    if (!order || successPay || order._id !== +id) {
       dispatch(getOrderDetails(id));
-    } else if (!order || order === undefined) {
-      // Handle order not found case
-      console.error('Order not found');
+    } else if (!order.isPaid) {
+      if (!window.paypal) {
+        addPayPalScript();
+      } else {
+        setSdkReady(true);
+      }
     }
   }, [dispatch, order, id]);
 

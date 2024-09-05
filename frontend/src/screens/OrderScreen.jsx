@@ -12,7 +12,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { getOrderDetails } from '../actions/orderActions';
+import { getOrderDetails, payOrder } from '../actions/orderActions';
+import { PayPalButton } from 'react-paypal-button-v2';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -66,7 +67,11 @@ const OrderScreen = () => {
         setSdkReady(true);
       }
     }
-  }, [dispatch, order, id]);
+  }, [dispatch, order, id, successPay]);
+
+  const successPaymentHandler = (paymentResult) => {
+    dispatch(payOrder(id, paymentResult));
+  };
 
   return loading ? (
     <Loader>Loading</Loader>
@@ -168,7 +173,19 @@ const OrderScreen = () => {
                 </Row>
               </ListGroup.Item>
 
-              <ListGroup.Item></ListGroup.Item>
+              {!order.isPaid && (
+                <ListGroup.Item>
+                  {loadingPay && <Loader />}
+                  {!sdkReady ? (
+                    <Loader />
+                  ) : (
+                    <PayPalButton
+                      amount={order.totalPrice}
+                      onSuccess={successPaymentHandler}
+                    />
+                  )}
+                </ListGroup.Item>
+              )}
             </ListGroup>
           </Card>
         </Col>

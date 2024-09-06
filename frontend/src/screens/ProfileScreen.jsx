@@ -6,6 +6,7 @@ import Message from '../components/Message';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserDetails, updateUserProfile } from '../actions/userActions';
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants';
+import { listMyOrders } from '../actions/orderActions';
 
 const ProfileScreen = () => {
   const [email, setEmail] = useState('');
@@ -33,6 +34,7 @@ const ProfileScreen = () => {
       if (!user || !user.name) {
         // because if no user there is no user.id
         dispatch(getUserDetails('profile'));
+        dispatch(listMyOrders());
       } else {
         setEmail(user.email);
         setName(user.name);

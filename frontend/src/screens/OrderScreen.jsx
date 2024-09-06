@@ -15,6 +15,7 @@ import Loader from '../components/Loader';
 import { getOrderDetails, payOrder } from '../actions/orderActions';
 import { PayPalButton } from 'react-paypal-button-v2';
 import dotenv from 'dotenv';
+import { ORDER_PAY_RESET } from '../constants/orderConstants';
 
 dotenv.config();
 
@@ -59,6 +60,7 @@ const OrderScreen = () => {
 
   useEffect(() => {
     if (!order || successPay || order._id !== +id) {
+      dispatch({ type: ORDER_PAY_RESET });
       dispatch(getOrderDetails(id));
     } else if (!order.isPaid) {
       if (!window.paypal) {

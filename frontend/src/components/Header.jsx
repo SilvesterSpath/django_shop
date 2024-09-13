@@ -7,7 +7,6 @@ const Header = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const dispatch = useDispatch();
   const { userInfo } = userLogin;
-  console.log(userInfo);
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -39,13 +38,13 @@ const Header = () => {
 
               {userInfo && userInfo.isAdmin && (
                 <NavDropdown title='Admin' id='adminmenu'>
-                  <NavDropdown.Item href='/admin/userList'>
+                  <NavDropdown.Item href='/admin/userlist'>
                     Users
                   </NavDropdown.Item>
                   <NavDropdown.Item href='/admin/productlist'>
                     Products
                   </NavDropdown.Item>
-                  <NavDropdown.Item href='/admin/orders'>
+                  <NavDropdown.Item href='/admin/orderlist'>
                     Orders
                   </NavDropdown.Item>
                 </NavDropdown>

@@ -14,7 +14,7 @@ import ShippingScreen from './screens/ShippingScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
-import AdminScreen from './screens/AdminScreen';
+import UserListScreen from './screens/UserListScreen';
 
 function App() {
   return (
@@ -34,7 +34,7 @@ function App() {
             <Route path='/order/:id' element={<OrderScreen />} />
             <Route path='/products/:id' element={<ProductScreen />} exact />
             <Route path='/cart/:id?' element={<CartScreen />} />
-            <Route path='/admin/userList' element={<AdminScreen />} />
+            <Route path='/admin/userList' element={<UserListScreen />} />
           </Routes>
         </Container>
       </main>

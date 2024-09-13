@@ -5,15 +5,23 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { Button, Table } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
-const AdminScreen = () => {
+const UserListScreen = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const userList = useSelector((state) => state.userList);
   const { loading, error, users } = userList;
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   useEffect(() => {
-    dispatch(getUserList());
+    if (userInfo && userInfo.isAdmin) {
+      dispatch(getUserList());
+    }
+    navigate('/login');
   }, []);
 
   const deleteHandler = (id) => {
@@ -81,4 +89,4 @@ const AdminScreen = () => {
   );
 };
 
-export default AdminScreen;
+export default UserListScreen;

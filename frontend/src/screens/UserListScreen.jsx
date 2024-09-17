@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserList } from '../actions/userActions';
+import { deleteUser, getUserList } from '../actions/userActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { Button, Table } from 'react-bootstrap';
@@ -17,16 +17,19 @@ const UserListScreen = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  const userDelete = useSelector((state) => state.userDelete);
+  const { success: successDelete } = userDelete;
+
   useEffect(() => {
-    if (userInfo && userInfo.isAdmin) {
+    if ((userInfo && userInfo.isAdmin) || successDelete) {
       dispatch(getUserList());
     } else {
       navigate('/login');
     }
-  }, []);
+  }, [successDelete]);
 
   const deleteHandler = (id) => {
-    // TODO: Implement delete user functionality
+    dispatch(deleteUser(id));
     console.log(`delete: ${id}`);
   };
 

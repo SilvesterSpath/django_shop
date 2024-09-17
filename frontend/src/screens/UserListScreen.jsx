@@ -20,8 +20,9 @@ const UserListScreen = () => {
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       dispatch(getUserList());
+    } else {
+      navigate('/login');
     }
-    navigate('/login');
   }, []);
 
   const deleteHandler = (id) => {

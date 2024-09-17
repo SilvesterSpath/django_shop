@@ -30,11 +30,11 @@ function App() {
             <Route path='/shipping' element={<ShippingScreen />} />
             <Route path='/payment' element={<PaymentScreen />} />
             <Route path='/placeorder' element={<PlaceOrderScreen />} />
+            <Route path='/admin/userlist' element={<UserListScreen />} />
 
             <Route path='/order/:id' element={<OrderScreen />} />
             <Route path='/products/:id' element={<ProductScreen />} exact />
             <Route path='/cart/:id?' element={<CartScreen />} />
-            <Route path='/admin/userList' element={<UserListScreen />} />
           </Routes>
         </Container>
       </main>

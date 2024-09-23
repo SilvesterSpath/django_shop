@@ -101,7 +101,7 @@ def getUsers(request):
 
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
-def getUserById(request):
+def getUserById(request, pk):
     user = User.objects.get(id=pk)
     # should be serialized before returning
     serializer = UserSerializer(user, many=False)

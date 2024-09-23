@@ -28,9 +28,10 @@ const UserListScreen = () => {
     }
   }, [successDelete]);
 
-  const deleteHandler = (id) => {
-    dispatch(deleteUser(id));
-    console.log(`delete: ${id}`);
+  const deleteHandler = (user) => {
+    if (window.confirm(`Are you sure you want to delete: ${user.name}`)) {
+      dispatch(deleteUser(user._id));
+    }
   };
 
   return (
@@ -79,7 +80,7 @@ const UserListScreen = () => {
                     <Button
                       variant='danger'
                       className='btn-sm'
-                      onClick={() => deleteHandler(item._id)}
+                      onClick={() => deleteHandler(item)}
                     >
                       <i className='fas fa-trash'></i>
                     </Button>

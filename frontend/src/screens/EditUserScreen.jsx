@@ -4,7 +4,7 @@ import { Form, Button } from 'react-bootstrap';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearUserDetails, getUserDetails } from '../actions/userActions';
+import { getUserDetails, clearUserDetails } from '../actions/userActions';
 import FormContainer from '../components/FormContainer';
 
 const EditUserScreen = () => {
@@ -28,28 +28,14 @@ const EditUserScreen = () => {
   };
 
   useEffect(() => {
-    // Reset local state when id changes
-    setName('');
-    setEmail('');
-    setIsAdmin(false);
-
-    // Clear user details and fetch new user data when id changes
-    dispatch(clearUserDetails());
-    dispatch(getUserDetails(id));
-
-    // Cleanup function to clear user details when component unmounts
-    return () => {
-      dispatch(clearUserDetails());
-    };
-  }, [dispatch, id]);
-
-  useEffect(() => {
-    if (user && user.name) {
+    if (!user.name || user._id !== +id) {
+      dispatch(getUserDetails(id));
+    } else {
       setName(user.name);
       setEmail(user.email);
       setIsAdmin(user.isAdmin);
     }
-  }, [user]);
+  }, [id, user]);
 
   return (
     <div>

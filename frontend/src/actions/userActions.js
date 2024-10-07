@@ -153,6 +153,10 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
   }
 };
 
+export const clearUserDetails = () => (dispatch) => {
+  dispatch({ type: USER_DETAILS_RESET });
+};
+
 // user update profile action (I send here the user data, because it need to be fetched from the backend)
 export const updateUserProfile = (user) => async (dispatch, getState) => {
   try {

@@ -4,7 +4,7 @@ import { Form, Button } from 'react-bootstrap';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserDetails } from '../actions/userActions';
+import { clearUserDetails, getUserDetails } from '../actions/userActions';
 import FormContainer from '../components/FormContainer';
 
 const EditUserScreen = () => {
@@ -15,8 +15,7 @@ const EditUserScreen = () => {
 
   const params = useParams();
   const { id } = params;
-
-  console.log('id', id);
+  console.log(id);
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -24,11 +23,33 @@ const EditUserScreen = () => {
   const userDetails = useSelector((state) => state.userDetails);
   const { loading, error, user } = userDetails;
 
-  useEffect(() => {}, []);
-
   const submitHandler = (e) => {
     e.preventDefault();
   };
+
+  useEffect(() => {
+    // Reset local state when id changes
+    setName('');
+    setEmail('');
+    setIsAdmin(false);
+
+    // Clear user details and fetch new user data when id changes
+    dispatch(clearUserDetails());
+    dispatch(getUserDetails(id));
+
+    // Cleanup function to clear user details when component unmounts
+    return () => {
+      dispatch(clearUserDetails());
+    };
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (user && user.name) {
+      setName(user.name);
+      setEmail(user.email);
+      setIsAdmin(user.isAdmin);
+    }
+  }, [user]);
 
   return (
     <div>
@@ -64,7 +85,6 @@ const EditUserScreen = () => {
             </Form.Group>
             <p></p>
             <Form.Group controlId='isAdmin'>
-              <Form.Label>Enter Password</Form.Label>
               <Form.Check
                 type='checkbox'
                 label='Is Admin'

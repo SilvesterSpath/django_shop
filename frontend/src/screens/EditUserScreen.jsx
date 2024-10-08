@@ -4,7 +4,12 @@ import { Form, Button } from 'react-bootstrap';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserDetails, clearUserDetails } from '../actions/userActions';
+import {
+  getUserDetails,
+  clearUserDetails,
+  updateUser,
+  clearUpdateSuccess,
+} from '../actions/userActions';
 import FormContainer from '../components/FormContainer';
 
 const EditUserScreen = () => {
@@ -23,19 +28,35 @@ const EditUserScreen = () => {
   const userDetails = useSelector((state) => state.userDetails);
   const { loading, error, user } = userDetails;
 
+  const userUpdate = useSelector((state) => state.userUpdate);
+  const {
+    loading: loadingUpdate,
+    error: errorUpdate,
+    success: successUpdate,
+  } = userUpdate;
+
   const submitHandler = (e) => {
     e.preventDefault();
+    dispatch(updateUser({ _id: user._id, name, email, password, isAdmin }));
   };
 
   useEffect(() => {
-    if (!user.name || user._id !== +id) {
+    if (successUpdate) {
+      dispatch(clearUpdateSuccess());
+      dispatch(clearUserDetails());
+      navigate('/admin/userlist');
+    } else if (!user.name || user._id !== +id) {
       dispatch(getUserDetails(id));
-    } else {
+    }
+  }, [id, user._id, successUpdate, dispatch, navigate]);
+
+  useEffect(() => {
+    if (user.name) {
       setName(user.name);
       setEmail(user.email);
       setIsAdmin(user.isAdmin);
     }
-  }, [id, user]);
+  }, [user]);
 
   return (
     <div>

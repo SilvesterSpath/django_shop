@@ -13,9 +13,9 @@ run_react() {
 }
 
 # Check the argument and run the appropriate function
-if [ "$1" = "django" ]; then
+if [ "$1" = "backend" ]; then
     run_django
-elif [ "$1" = "react" ]; then
+elif [ "$1" = "frontend" ]; then
     run_react
 else
     echo "Usage: $0 [django|react]"

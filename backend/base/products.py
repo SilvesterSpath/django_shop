@@ -6,7 +6,7 @@ products = [
     'description':
       'Tommy Thayer Electric Blue Les Paul OutfitFeaturing Seymour Duncan JB humbuckers and new EpiLite Case KISS legend Tommy “Spaceman” Thayer returns with his fourth Epiphone signature guitar, the Tommy Thayer Electric Blue Les Paul Outfit.',
     'brand': 'Les Paul',
-    'category': 'Electronics',
+    'category': 'Instruments',
     'price': 849.99,
     'countInStock': 10,
     'rating': 4.5,
@@ -32,7 +32,7 @@ products = [
     'description':
       'Characterized by versatile imaging specs, the Canon EOS 80D further clarifies itself using a pair of robust focusing systems and an intuitive design',
     'brand': 'Nike',
-    'category': 'Electronics',
+    'category': 'Sports',
     'price': 80.99,
     'countInStock': 0,
     'rating': 3,

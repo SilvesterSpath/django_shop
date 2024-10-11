@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteUser, getUserList } from '../actions/userActions';
+import { listProducts } from '../actions/productActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-import { Button, Table } from 'react-bootstrap';
+import { Button, Table, Row, Col } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,32 +11,43 @@ const ProductListScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const userList = useSelector((state) => state.userList);
-  const { loading, error, users } = userList;
+  const productList = useSelector((state) => state.productList);
+  const { loading, error, products } = productList;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const userDelete = useSelector((state) => state.userDelete);
-  const { success: successDelete } = userDelete;
-
   useEffect(() => {
-    if ((userInfo && userInfo.isAdmin) || successDelete) {
-      dispatch(getUserList());
+    if (userInfo && userInfo.isAdmin) {
+      dispatch(listProducts());
     } else {
       navigate('/login');
     }
-  }, [successDelete]);
+  }, [dispatch, userInfo]);
 
   const deleteHandler = (user) => {
-    if (window.confirm(`Are you sure you want to delete: ${user.name}`)) {
-      dispatch(deleteUser(user._id));
+    if (window.confirm(`Are you sure you want to delete this product?`)) {
+      // Delete products
     }
+  };
+
+  const createProductHandler = (product) => {
+    // Create product
+    console.log('Create product');
   };
 
   return (
     <div>
-      <h1>Users</h1>
+      <Row className='align-items-center'>
+        <Col>
+          <h1>Products</h1>
+        </Col>
+        <Col className='text-right'>
+          <Button className='my-3' onClick={createProductHandler}>
+            <i className='fas fa-plus'></i>Create Product
+          </Button>
+        </Col>
+      </Row>
       {loading ? (
         <Loader />
       ) : error ? (
@@ -47,32 +58,25 @@ const ProductListScreen = () => {
             <tr>
               <th>ID</th>
               <th>NAME</th>
-              <th>EMAIL</th>
-              <th>ADMIN</th>
+              <th>PRICE</th>
+              <th>CATEGORY</th>
+              <th>BRAND</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            {users &&
-              users.length > 0 &&
-              users.map((item) => (
+            {products &&
+              products.length > 0 &&
+              products.map((item) => (
                 <tr key={item._id}>
                   <td>{item._id}</td>
                   <td>{item.name}</td>
-                  <td>{item.email}</td>
+                  <td>{item.price}</td>
 
+                  <td>{item.category}</td>
+                  <td>{item.brand}</td>
                   <td>
-                    {item.isAdmin ? (
-                      <i
-                        className='fas fa-check'
-                        style={{ color: 'green' }}
-                      ></i>
-                    ) : (
-                      <i className='fas fa-times' style={{ color: 'red' }}></i>
-                    )}
-                  </td>
-                  <td>
-                    <LinkContainer to={`/admin/user/${item._id}/edit`}>
+                    <LinkContainer to={`/admin/products/${item._id}/edit`}>
                       <Button variant='light' className='btn-sm'>
                         <i className='fas fa-edit'></i>
                       </Button>

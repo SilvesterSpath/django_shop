@@ -44,7 +44,7 @@ const ProductListScreen = () => {
         </Col>
         <Col className='text-right'>
           <Button className='my-3' onClick={createProductHandler}>
-            <i className='fas fa-plus'></i>Create Product
+            <i className='fas fa-plus'></i> Create Product
           </Button>
         </Col>
       </Row>
@@ -76,7 +76,7 @@ const ProductListScreen = () => {
                   <td>{item.category}</td>
                   <td>{item.brand}</td>
                   <td>
-                    <LinkContainer to={`/admin/products/${item._id}/edit`}>
+                    <LinkContainer to={`/admin/product/${item._id}/edit`}>
                       <Button variant='light' className='btn-sm'>
                         <i className='fas fa-edit'></i>
                       </Button>

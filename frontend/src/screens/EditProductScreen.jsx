@@ -37,7 +37,7 @@ const EditProductScreen = () => {
 
   return (
     <div>
-      <Link to='/' className='btn my-3'>
+      <Link to='/admin/productlist' className='btn my-3'>
         Go Back
       </Link>
 

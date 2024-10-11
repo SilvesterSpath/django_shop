@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { listProducts } from '../actions/productActions';
+import { deleteProduct, listProducts } from '../actions/productActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { Button, Table, Row, Col } from 'react-bootstrap';
@@ -14,6 +14,13 @@ const ProductListScreen = () => {
   const productList = useSelector((state) => state.productList);
   const { loading, error, products } = productList;
 
+  const productDelete = useSelector((state) => state.productDelete);
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = productDelete;
+
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
@@ -23,11 +30,11 @@ const ProductListScreen = () => {
     } else {
       navigate('/login');
     }
-  }, [dispatch, userInfo]);
+  }, [dispatch, userInfo, successDelete]);
 
-  const deleteHandler = (user) => {
+  const deleteHandler = (id) => {
     if (window.confirm(`Are you sure you want to delete this product?`)) {
-      // Delete products
+      dispatch(deleteProduct(id));
     }
   };
 
@@ -48,6 +55,9 @@ const ProductListScreen = () => {
           </Button>
         </Col>
       </Row>
+
+      {loadingDelete && <Loader />}
+      {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
       {loading ? (
         <Loader />
       ) : error ? (
@@ -84,7 +94,7 @@ const ProductListScreen = () => {
                     <Button
                       variant='danger'
                       className='btn-sm'
-                      onClick={() => deleteHandler(item)}
+                      onClick={() => deleteHandler(item._id)}
                     >
                       <i className='fas fa-trash'></i>
                     </Button>

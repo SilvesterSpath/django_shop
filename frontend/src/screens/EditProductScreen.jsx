@@ -14,118 +14,133 @@ import { listProductDetails } from '../actions/productActions';
 import Rating from '../components/Rating';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import FormContainer from '../components/FormContainer';
 
 const EditProductScreen = () => {
-  const [quantity, setQuantity] = useState(1);
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState(0);
+  const [image, setImage] = useState('');
+  const [category, setCategory] = useState('');
+  const [countInStock, setCountInStock] = useState(0);
+  const [description, setDescription] = useState('');
+  const [brand, setBrand] = useState('');
+
   const navigate = useNavigate();
 
   const params = useParams();
   const { id } = params;
   const productDetails = useSelector((store) => store.productDetails);
   const { loading, error, product } = productDetails;
-  console.log(product);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(listProductDetails(id));
-  }, [dispatch, id]);
+    if (!product.name || product._id !== Number(id)) {
+      dispatch(listProductDetails(id));
+    } else {
+      setName(product.name);
+      setPrice(product.price);
+      setCategory(product.category);
+      setCountInStock(product.countInStock);
+      setDescription(product.description);
+      setBrand(product.brand);
+      setImage(product.image);
+    }
+  }, [dispatch, product, id]);
 
-  const addToCartHandler = () => {
-    /* dispatch({ type: 'ADD_TO_CART', payload: { ...product, quantity } }); */
-    navigate(`/cart/${id}?qty=${quantity}`);
+  const submitHandler = (e) => {
+    e.preventDefault();
+    // Update product
   };
 
   return (
     <div>
-      <Link to='/admin/productlist' className='btn my-3'>
+      <Link to='/admin/productlist' className='btn btn-light my-3'>
         Go Back
       </Link>
-
-      {loading ? (
-        <Loader />
-      ) : error ? (
-        <Message variant='danger'>{error}</Message>
-      ) : (
-        <Row>
-          <Col md={6}>
-            <Image src={product.image} alt={product.name} fluid />
-          </Col>
-          <Col md={3}>
-            <ListGroup variant='flush'>
-              <ListGroup.Item>
-                <h3>{product.name}</h3>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Rating rating={product.rating} color='#f8e825' />
-              </ListGroup.Item>
-
-              <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
-
-              <ListGroup.Item>{product.description}</ListGroup.Item>
-            </ListGroup>
-          </Col>
-          <Col md={3}>
-            <Card>
-              <ListGroup variant='flush'>
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Price: </Col>
-                    <Col>
-                      <strong>${product.price}</strong>
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Status: </Col>
-                    <Col>
-                      {product.countInStock > 0 ? 'In Stock' : 'Out of Stuck'}
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-
-                {product.countInStock > 0 && (
-                  <ListGroup.Item>
-                    <Row>
-                      <Col>Quantity</Col>
-                      <Col xs='auto' className='my-1 p-1'>
-                        <Form.Control
-                          as='select'
-                          value={quantity}
-                          onChange={(e) => setQuantity(Number(e.target.value))}
-                        >
-                          {[...Array(product.countInStock).keys()].map(
-                            (item) => (
-                              <option key={item + 1} value={item + 1}>
-                                {item + 1}
-                              </option>
-                            )
-                          )}
-                        </Form.Control>
-                      </Col>
-                    </Row>
-                  </ListGroup.Item>
-                )}
-                <ListGroup.Item>
-                  <Button
-                    onClick={addToCartHandler}
-                    className='btn rounded-1'
-                    type='button'
-                    style={{
-                      backgroundColor: '#212529',
-                      color: '#fff',
-                      width: '100%',
-                    }}
-                    disabled={product.countInStock === 0}
-                  >
-                    Add to Cart
-                  </Button>
-                </ListGroup.Item>
-              </ListGroup>
-            </Card>
-          </Col>
-        </Row>
-      )}
+      <FormContainer>
+        <h1>Edit Product</h1>
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <Message variant='danger'>{error}</Message>
+        ) : (
+          <Form onSubmit={submitHandler}>
+            <Form.Group controlId='name'>
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type='text'
+                placeholder='Enter name'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+            <p></p>
+            <Form.Group controlId='price'>
+              <Form.Label>Price</Form.Label>
+              <Form.Control
+                type='number'
+                placeholder='Enter price'
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+            <p></p>
+            <Form.Group controlId='image'>
+              <Form.Label>Image</Form.Label>
+              <Form.Control
+                type='text'
+                placeholder='Add image'
+                value={image}
+                onChange={(e) => setImage(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+            <p></p>
+            <Form.Group controlId='brand'>
+              <Form.Label>Brand</Form.Label>
+              <Form.Control
+                type='text'
+                placeholder='Enter brand'
+                value={brand}
+                onChange={(e) => setBrand(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+            <p></p>
+            <Form.Group controlId='countInStock'>
+              <Form.Label>CountInStock</Form.Label>
+              <Form.Control
+                type='number'
+                placeholder='Enter countInStock'
+                value={countInStock}
+                onChange={(e) => setCountInStock(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+            <p></p>
+            <Form.Group controlId='category'>
+              <Form.Label>Category</Form.Label>
+              <Form.Control
+                type='text'
+                placeholder='Enter category'
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+            <p></p>
+            <Form.Group controlId='description'>
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                type='text'
+                placeholder='Enter description'
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+            <p></p>
+            <Button type='submit' variant='primary'>
+              Update
+            </Button>
+          </Form>
+        )}
+      </FormContainer>
     </div>
   );
 };

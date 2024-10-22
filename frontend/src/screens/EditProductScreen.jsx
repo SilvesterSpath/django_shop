@@ -10,7 +10,7 @@ import {
   Form,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { listProductDetails } from '../actions/productActions';
+import { listProductDetails, updateProduct } from '../actions/productActions';
 import Rating from '../components/Rating';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
@@ -49,7 +49,18 @@ const EditProductScreen = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    // Update product
+    dispatch(
+      updateProduct({
+        _id: product._id,
+        name,
+        price,
+        image,
+        category,
+        countInStock,
+        description,
+        brand,
+      })
+    );
   };
 
   return (

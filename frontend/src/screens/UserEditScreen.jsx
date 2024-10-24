@@ -12,7 +12,7 @@ import {
 } from '../actions/userActions';
 import FormContainer from '../components/FormContainer';
 
-const EditUserScreen = () => {
+const UserEditScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -114,4 +114,4 @@ const EditUserScreen = () => {
   );
 };
 
-export default EditUserScreen;
+export default UserEditScreen;
